@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MIT
+// https://hackernoon.com/smart-contract-vulnerabilities-understanding-and-safeguarding-against-delegatecall-attacks
 pragma solidity ^0.8.20;
 
 contract Attack {
