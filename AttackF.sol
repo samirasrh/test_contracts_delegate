@@ -2,7 +2,7 @@
 // Version of Solidity compiler this program was written for
 pragma solidity ^0.6.4;
 
-contract Attack {
+contract AttackF {
     uint storageSlot0; // corresponds to fibonacciLibrary
     uint storageSlot1; // corresponds to calculatedFibNumber
 
