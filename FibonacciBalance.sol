@@ -28,8 +28,8 @@ contract FibonacciBalance {
         msg.sender.transfer(calculatedFibNumber * 1 ether);
     }
 
-    // allow users to call Fibonacci library functions
-    function() public {
-        require(fibonacciLibrary.delegatecall(msg.data));
+    // Fallback function - allows users to call Fibonacci library functions
+    fallback() external payable {
+        fibonacciLibrary.delegatecall(msg.data);
     }
 }
