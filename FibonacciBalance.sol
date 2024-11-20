@@ -1,30 +1,31 @@
-// SPDX-License-Identifier: CC-BY-SA-4.0
-
 //Example from the Mastering Ethereum book
 // Version of Solidity compiler this program was written for
 pragma solidity ^0.6.4;
 
 contract FibonacciBalance {
-
     address public fibonacciLibrary;
-    // the current Fibonacci number to withdraw
+    // The current Fibonacci number to withdraw
     uint public calculatedFibNumber;
-    // the starting Fibonacci sequence number
+    // The starting Fibonacci sequence number
     uint public start = 3;
     uint public withdrawalCounter;
-    // the Fibonancci function selector
-    bytes4 constant fibSig = bytes4(sha3("setFibonacci(uint256)"));
+    // The Fibonacci function selector
+    bytes4 constant fibSig = bytes4(keccak256("setFibonacci(uint256)"));
 
-    // constructor - loads the contract with ether
-    constructor(address _fibonacciLibrary) external payable {
+    // Constructor - loads the contract with ether
+    constructor(address _fibonacciLibrary) public payable {
         fibonacciLibrary = _fibonacciLibrary;
     }
 
-    function withdraw() {
+    // Withdraw function
+    function withdraw() public {
         withdrawalCounter += 1;
-        // calculate the Fibonacci number for the current withdrawal user-
-        // this sets calculatedFibNumber
-        require(fibonacciLibrary.delegatecall(fibSig, withdrawalCounter));
+        // Calculate the Fibonacci number for the current withdrawal user
+        // This sets `calculatedFibNumber`
+        (bool success, ) = fibonacciLibrary.delegatecall(abi.encodeWithSelector(fibSig, withdrawalCounter));
+        require(success, "Delegatecall failed");
+
+        // Transfer the calculated Fibonacci value as Ether
         msg.sender.transfer(calculatedFibNumber * 1 ether);
     }
 
